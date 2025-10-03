@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: ai-code-backend
+  session:
+    timeout: 2592000
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/ai_code_gen
+    username: guangtumuxixirihan
+    password:
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password:
+      ttl: 3600
+  profiles:
+    active: local
+server:
+  port: 8123
+  servlet:
+    context-path: /api
+    session:
+      cookie:
+        max-age: 2592000
+springdoc:
+  swagger-ui:
+    path: doc.html
+

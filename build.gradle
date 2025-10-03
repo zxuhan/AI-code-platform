@@ -1,0 +1,58 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.5.6'
+    id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.zxuhan'
+version = '0.0.1-SNAPSHOT'
+description = 'ai-code-backend'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+    mockitoAgent
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+    implementation 'dev.langchain4j:langchain4j-spring-boot-starter:1.5.0-beta11'
+    implementation 'dev.langchain4j:langchain4j-open-ai-spring-boot-starter:1.5.0-beta11'
+    implementation 'dev.langchain4j:langchain4j-reactor:1.5.0-beta11'
+    implementation 'dev.langchain4j:langchain4j-community-redis-spring-boot-starter:1.5.0-beta11'
+    implementation 'com.github.ben-manes.caffeine:caffeine:3.2.2'
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.13'
+    implementation 'com.mybatis-flex:mybatis-flex-spring-boot3-starter:1.11.1'
+    implementation 'cn.hutool:hutool-all:5.8.40'
+    implementation 'com.zaxxer:HikariCP'
+    implementation 'org.springframework.session:spring-session-data-redis'
+    compileOnly 'org.projectlombok:lombok'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    runtimeOnly 'org.postgresql:postgresql'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    mockitoAgent('org.mockito:mockito-core') {
+        transitive = false
+    }
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+
+    jvmArgs "-javaagent:${configurations.mockitoAgent.asPath}"
+    jvmArgs "-Xshare:off";
+}
