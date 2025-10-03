@@ -12,7 +12,7 @@ import com.zxuhan.aicodebackend.exception.ErrorCode;
 import com.zxuhan.aicodebackend.exception.ThrowUtils;
 import com.zxuhan.aicodebackend.model.dto.user.*;
 import com.zxuhan.aicodebackend.model.entity.User;
-import com.zxuhan.aicodebackend.model.service.UserService;
+import com.zxuhan.aicodebackend.service.UserService;
 import com.zxuhan.aicodebackend.model.vo.LoginUserVO;
 import com.zxuhan.aicodebackend.model.vo.UserVO;
 import jakarta.servlet.http.HttpServletRequest;

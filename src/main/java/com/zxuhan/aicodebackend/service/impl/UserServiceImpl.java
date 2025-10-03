@@ -1,4 +1,4 @@
-package com.zxuhan.aicodebackend.model.service.impl;
+package com.zxuhan.aicodebackend.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
@@ -11,7 +11,7 @@ import com.zxuhan.aicodebackend.mapper.UserMapper;
 import com.zxuhan.aicodebackend.model.dto.user.UserQueryRequest;
 import com.zxuhan.aicodebackend.model.entity.User;
 import com.zxuhan.aicodebackend.model.enums.UserRoleEnum;
-import com.zxuhan.aicodebackend.model.service.UserService;
+import com.zxuhan.aicodebackend.service.UserService;
 import com.zxuhan.aicodebackend.model.vo.LoginUserVO;
 import com.zxuhan.aicodebackend.model.vo.UserVO;
 import jakarta.servlet.http.HttpServletRequest;

@@ -1,4 +1,4 @@
-package com.zxuhan.aicodebackend.model.service;
+package com.zxuhan.aicodebackend.service;
 
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;

@@ -1,8 +1,7 @@
-package com.zxuhan.aicodebackend.model.service.impl;
+package com.zxuhan.aicodebackend.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
-import com.mybatisflex.core.BaseMapper;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
@@ -15,12 +14,11 @@ import com.zxuhan.aicodebackend.model.entity.App;
 import com.zxuhan.aicodebackend.model.entity.ChatHistory;
 import com.zxuhan.aicodebackend.model.entity.User;
 import com.zxuhan.aicodebackend.model.enums.ChatHistoryMessageTypeEnum;
-import com.zxuhan.aicodebackend.model.service.AppService;
-import com.zxuhan.aicodebackend.model.service.ChatHistoryService;
+import com.zxuhan.aicodebackend.service.AppService;
+import com.zxuhan.aicodebackend.service.ChatHistoryService;
 import dev.langchain4j.data.message.AiMessage;
 import dev.langchain4j.data.message.UserMessage;
 import dev.langchain4j.memory.chat.MessageWindowChatMemory;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;

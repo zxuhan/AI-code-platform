@@ -1,4 +1,4 @@
-package com.zxuhan.aicodebackend.model.service.impl;
+package com.zxuhan.aicodebackend.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
@@ -18,14 +18,13 @@ import com.zxuhan.aicodebackend.model.entity.App;
 import com.zxuhan.aicodebackend.model.entity.User;
 import com.zxuhan.aicodebackend.model.enums.ChatHistoryMessageTypeEnum;
 import com.zxuhan.aicodebackend.model.enums.CodeGenTypeEnum;
-import com.zxuhan.aicodebackend.model.service.AppService;
-import com.zxuhan.aicodebackend.model.service.ChatHistoryService;
-import com.zxuhan.aicodebackend.model.service.UserService;
+import com.zxuhan.aicodebackend.service.AppService;
+import com.zxuhan.aicodebackend.service.ChatHistoryService;
+import com.zxuhan.aicodebackend.service.UserService;
 import com.zxuhan.aicodebackend.model.vo.AppVO;
 import com.zxuhan.aicodebackend.model.vo.UserVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 

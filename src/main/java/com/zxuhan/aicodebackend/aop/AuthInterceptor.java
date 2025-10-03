@@ -5,7 +5,7 @@ import com.zxuhan.aicodebackend.exception.BusinessException;
 import com.zxuhan.aicodebackend.exception.ErrorCode;
 import com.zxuhan.aicodebackend.model.entity.User;
 import com.zxuhan.aicodebackend.model.enums.UserRoleEnum;
-import com.zxuhan.aicodebackend.model.service.UserService;
+import com.zxuhan.aicodebackend.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.ProceedingJoinPoint;
