@@ -8,6 +8,8 @@ Built with **Spring Boot 3 + LangChain4j + Vue 3**, this platform enables users 
 
 **Tech Stack:** Spring Boot 3 · LangChain4j · Vue 3 · MyBatis-Flex · PostgreSQL · Redis · Caffeine
 
+<img width="1513" height="994" alt="Screenshot 2025-10-08 at 18 05 19" src="https://github.com/user-attachments/assets/b3710c1a-db74-4032-9e07-e4aaff10c025" />
+
 ---
 
 ## Key Features
@@ -15,8 +17,12 @@ Built with **Spring Boot 3 + LangChain4j + Vue 3**, this platform enables users 
 ### Intelligent Code Generation
 Natural language to complete web apps (single HTML or multi-file mode) with SSE streaming output and smart regex-based code parsing.
 
+<img width="1510" height="1161" alt="Screenshot 2025-10-08 at 18 07 15" src="https://github.com/user-attachments/assets/af2f8266-72fd-43ab-8bd1-9a2edfce0526" />
+
 ### Live Preview & Deployment
 Instant preview of generated apps + one-click deployment to shareable URLs with organized file management.
+
+<img width="1508" height="1135" alt="Screenshot 2025-10-08 at 18 07 29" src="https://github.com/user-attachments/assets/41e06d9a-f396-4db8-a4c6-1ee1aa69ff08" />
 
 ### Application Management
 User authentication, CRUD operations, role-based permissions (AOP), pagination, and featured apps showcase.
@@ -36,7 +42,7 @@ PostgreSQL storage + Redis-backed memory for context-aware conversations with cu
 
 **Data Layer**
 - MyBatis-Flex with QueryWrapper pattern
-- PostgreSQL with optimized indexing
+- PostgreSQL with optimized indexing + cursoring pagination
 - Multi-level caching: Caffeine (in-memory) + Redis (distributed)
 
 **Architecture**
