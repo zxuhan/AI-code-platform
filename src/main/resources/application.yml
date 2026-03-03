@@ -1,0 +1,64 @@
+spring:
+  application:
+    name: ai-code-backend
+  profiles:
+    active: local
+  # session configuration
+  session:
+    store-type: redis
+    # session expires after 30 days
+    timeout: 2592000
+  # mysql
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/ai_code
+    username: root
+    password: 123456
+  # redis
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password:
+      ttl: 3600
+server:
+  port: 8123
+  servlet:
+    context-path: /api
+    # cookie expires after 30 days
+    session:
+      cookie:
+        max-age: 2592000
+# springdoc-openapi
+springdoc:
+  group-configs:
+    - group: 'default'
+      paths-to-match: '/**'
+      packages-to-scan: com.zxuhan.aicode.controller
+# knife4j
+knife4j:
+  enable: true
+  setting:
+    language: en
+# AI (Google Gemini via langchain4j)
+# For native dev: copy application-local.yml.example to application-local.yml and put a real key there.
+langchain4j:
+  google-ai-gemini:
+    chat-model:
+      api-key: your-gemini-api-key
+      model-name: gemini-2.5-flash-lite
+      max-output-tokens: 8192
+      log-requests-and-responses: true
+    streaming-chat-model:
+      api-key: your-gemini-api-key
+      model-name: gemini-2.5-flash
+      max-output-tokens: 8192
+      log-requests-and-responses: true
+# Cloudflare R2 object storage (S3-compatible)
+r2:
+  client:
+    endpoint: https://your-account-id.r2.cloudflarestorage.com
+    accessKeyId: your-access-key-id
+    secretAccessKey: your-secret-access-key
+    bucket: your-bucket-name
+    publicUrl: https://your-bucket.r2.dev
