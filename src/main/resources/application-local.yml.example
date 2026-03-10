@@ -1,0 +1,27 @@
+# ========================================
+# Local development config example
+# ========================================
+# Copy this file to application-local.yml and fill in real keys.
+# Spring loads it automatically because application.yml sets
+# spring.profiles.active: local.
+# application-local.yml is gitignored.
+# ========================================
+
+# Google Gemini API key — get one at https://aistudio.google.com/app/apikey
+langchain4j:
+  google-ai-gemini:
+    chat-model:
+      api-key: your-real-gemini-api-key
+    streaming-chat-model:
+      api-key: your-real-gemini-api-key
+
+# Cloudflare R2 (only needed when calling screenshot/upload endpoints)
+# Create a bucket + API token at https://dash.cloudflare.com/?to=/:account/r2
+# Public URL is either your custom domain or the bucket's pub-<hash>.r2.dev address.
+r2:
+  client:
+    endpoint: https://<account-id>.r2.cloudflarestorage.com
+    accessKeyId: your-r2-access-key-id
+    secretAccessKey: your-r2-secret-access-key
+    bucket: your-bucket-name
+    publicUrl: https://pub-xxx.r2.dev
