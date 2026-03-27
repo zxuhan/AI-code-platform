@@ -1,0 +1,98 @@
+# ========================================
+# ai-code - Docker Compose (PRODUCTION on droplet)
+# ========================================
+# Reuses folio's running mysql/redis containers via the external folio-network.
+# Folio MUST be deployed first — its docker compose creates the network.
+#
+# Required first-time setup on the droplet:
+#   1. Folio is already running (its mysql + redis are on folio-network).
+#   2. Bootstrap the ai_code database in folio's mysql:
+#        docker exec -i folio-mysql mysql -uroot -p"$MYSQL_ROOT_PASSWORD" < sql/create_table.sql
+#   3. Place this file + .env in /opt/ai-code/ (the GH Actions deploy job SCPs
+#      this file; you provision .env once by hand).
+#   4. docker compose -f docker-compose.prod.yml pull
+#   5. docker compose -f docker-compose.prod.yml up -d
+#
+# Subsequent deploys are fully automated by .github/workflows/deploy.yml.
+# ========================================
+
+services:
+  # ============ Backend service ============
+  backend:
+    image: zxuhan7/ai-code-backend:latest
+    container_name: ai-code-backend
+    restart: unless-stopped
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      TZ: ${TZ:-Europe/Amsterdam}
+
+      # `mysql` and `redis` are folio's container aliases on folio-network.
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/${MYSQL_DATABASE:-ai_code}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Europe/Amsterdam&characterEncoding=utf8
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ${MYSQL_ROOT_PASSWORD:?must match folio's MYSQL_ROOT_PASSWORD}
+
+      SPRING_DATA_REDIS_HOST: redis
+      SPRING_DATA_REDIS_PORT: 6379
+      SPRING_DATA_REDIS_PASSWORD: ${REDIS_PASSWORD:-}
+
+      GEMINI_API_KEY: ${GEMINI_API_KEY:?Please set GEMINI_API_KEY in .env}
+      GEMINI_TEXT_MODEL: ${GEMINI_TEXT_MODEL:-gemini-2.5-flash-lite}
+      GEMINI_STREAMING_MODEL: ${GEMINI_STREAMING_MODEL:-gemini-2.5-flash}
+
+      R2_ENDPOINT: ${R2_ENDPOINT:-}
+      R2_ACCESS_KEY_ID: ${R2_ACCESS_KEY_ID:-}
+      R2_SECRET_ACCESS_KEY: ${R2_SECRET_ACCESS_KEY:-}
+      R2_BUCKET: ${R2_BUCKET:-}
+      R2_PUBLIC_URL: ${R2_PUBLIC_URL:-}
+
+      JAVA_OPTS: ${JAVA_OPTS:--Xms256m -Xmx768m -XX:+UseG1GC -XX:MaxGCPauseMillis=200}
+    ports:
+      # Bind to localhost only — host-side Caddy proxies the public domain
+      # to the frontend, which proxies /api/* to backend over the docker network.
+      - "127.0.0.1:${BACKEND_PORT:-8124}:8123"
+    networks:
+      - folio-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8123/api/health/"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 90s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "3"
+
+  # ============ Frontend service ============
+  frontend:
+    image: zxuhan7/ai-code-frontend:latest
+    container_name: ai-code-frontend
+    restart: unless-stopped
+    environment:
+      TZ: ${TZ:-Europe/Amsterdam}
+    ports:
+      - "127.0.0.1:${FRONTEND_PORT:-8082}:80"
+    depends_on:
+      - backend
+    networks:
+      - folio-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+# ============ Networks ============
+# folio-network is owned by folio's docker-compose. Declared external here
+# so we attach to it without trying to manage it.
+networks:
+  folio-network:
+    external: true
+    name: folio-network

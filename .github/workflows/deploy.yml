@@ -1,0 +1,78 @@
+# ========================================
+# Build images on GitHub's runner (free 7 GB RAM, plenty for Maven + npm),
+# push to Docker Hub, then SSH into the droplet to pull + restart.
+# Triggered on every push to main, or manually via the "Run workflow" button.
+# ========================================
+
+name: Build and Deploy ai-code
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push backend
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          platforms: linux/amd64
+          tags: zxuhan7/ai-code-backend:latest
+          cache-from: type=gha,scope=ai-code-backend
+          cache-to: type=gha,mode=max,scope=ai-code-backend
+
+      - name: Build and push frontend
+        uses: docker/build-push-action@v5
+        with:
+          context: ./frontend
+          file: ./frontend/Dockerfile
+          push: true
+          platforms: linux/amd64
+          tags: zxuhan7/ai-code-frontend:latest
+          cache-from: type=gha,scope=ai-code-frontend
+          cache-to: type=gha,mode=max,scope=ai-code-frontend
+
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Copy docker-compose.prod.yml to droplet
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.DROPLET_HOST }}
+          username: ${{ secrets.DROPLET_USERNAME }}
+          key: ${{ secrets.DROPLET_SSH_KEY }}
+          source: "docker-compose.prod.yml"
+          target: "/opt/ai-code/"
+
+      - name: Pull and restart on droplet
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.DROPLET_HOST }}
+          username: ${{ secrets.DROPLET_USERNAME }}
+          key: ${{ secrets.DROPLET_SSH_KEY }}
+          script: |
+            cd /opt/ai-code
+            docker compose -f docker-compose.prod.yml pull
+            docker compose -f docker-compose.prod.yml up -d
+            docker image prune -f

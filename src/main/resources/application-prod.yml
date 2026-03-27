@@ -1,0 +1,44 @@
+# ========================================
+# Production profile (used inside Docker).
+# Activated by --spring.profiles.active=prod (set in Dockerfile + compose).
+# All connection details come from docker-compose's environment block,
+# which in turn reads .env. No fallbacks here for required values — fail
+# fast if compose forgot to inject something.
+# ========================================
+
+server:
+  port: 8123
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+  data:
+    redis:
+      host: ${SPRING_DATA_REDIS_HOST}
+      port: ${SPRING_DATA_REDIS_PORT}
+      password: ${SPRING_DATA_REDIS_PASSWORD:}
+      ttl: 3600
+
+langchain4j:
+  google-ai-gemini:
+    chat-model:
+      api-key: ${GEMINI_API_KEY}
+      model-name: ${GEMINI_TEXT_MODEL:gemini-2.5-flash-lite}
+      max-output-tokens: 8192
+      log-requests-and-responses: true
+    streaming-chat-model:
+      api-key: ${GEMINI_API_KEY}
+      model-name: ${GEMINI_STREAMING_MODEL:gemini-2.5-flash}
+      max-output-tokens: 8192
+      log-requests-and-responses: true
+
+r2:
+  client:
+    endpoint: ${R2_ENDPOINT:}
+    accessKeyId: ${R2_ACCESS_KEY_ID:}
+    secretAccessKey: ${R2_SECRET_ACCESS_KEY:}
+    bucket: ${R2_BUCKET:}
+    publicUrl: ${R2_PUBLIC_URL:}
