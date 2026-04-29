@@ -161,7 +161,7 @@ onMounted(() => {
     <div class="container">
       <!-- Site title and description -->
       <div class="hero-section">
-        <h1 class="hero-title">AI Application Platform</h1>
+        <h1 class="hero-title">AI Code Platform</h1>
         <p class="hero-description">Create web apps with a single sentence</p>
       </div>
 

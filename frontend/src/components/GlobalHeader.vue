@@ -6,7 +6,6 @@
         <RouterLink to="/">
           <div class="header-left">
             <img class="logo" src="@/assets/logo.png" alt="Logo" />
-            <h1 class="site-title">zxuhan App Generator</h1>
           </div>
         </RouterLink>
       </a-col>
@@ -81,11 +80,6 @@ const originItems = [
     key: '/admin/appManage',
     label: 'Application Management',
     title: 'Application Management',
-  },
-  {
-    key: 'others',
-    label: h('a', { href: 'https://www.codefather.cn', target: '_blank' }, 'Codefather'),
-    title: 'Codefather',
   },
 ]
 
