@@ -193,14 +193,6 @@ Backend on `:8123/api`, frontend on `:5173`. Vite proxies `/api` to the backend.
 
 ---
 
-## Deploy to a 4 GB DO droplet alongside another app
-
-This repo is set up to share an existing droplet's MySQL + Redis with a sibling project (it joins the sibling's docker network as `external`, uses a separate database name `ai_code`, binds to `127.0.0.1:8124` and `127.0.0.1:8082` so the host's Caddy can front it). See `docker-compose.prod.yml` for the wiring and `.github/workflows/deploy.yml` for the build-and-push-and-SSH pipeline.
-
-Memory budget at peak (folio + ai-code + shared mysql/redis + 2× nginx + Docker + OS + Caddy + one in-flight Chromium screenshot) lands at **~3.2 GB on a 4 GB droplet**.
-
----
-
 ## Project layout
 
 ```
@@ -229,22 +221,6 @@ src/main/java/com/zxuhan/aicode/
 sql/                                              # schema (create_table.sql)
 frontend/                                         # Vue 3 + Vite + Ant Design Vue SPA
 .github/workflows/deploy.yml                      # CI: build → Docker Hub → SSH deploy
-```
-
----
-
-## Suggested GitHub repo metadata
-
-**About**
-
-> AI code-generation platform: one prompt → working web app. LangChain4j multi-model routing across Gemini 2.5 Flash-Lite/Flash/Pro, tool-calling Vue scaffolding, SSE streaming, per-app chat memory on Redis + MySQL, auto-screenshot to R2.
-
-**Topics**
-
-```
-spring-boot · langchain4j · gemini · ai-code-generation · ai-agent
-tool-calling · llm · sse · server-sent-events · vue3 · typescript
-ant-design-vue · mybatis-flex · cloudflare-r2 · docker · java21
 ```
 
 ---
